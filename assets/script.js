@@ -75,7 +75,7 @@ function carousel () {
 	})
 
 	arrowLeft.addEventListener("click", () => {
-		dots[i].classList.remove(".dot_selected") // removes the highlighted dot on the previous slide
+		dots[i].classList.remove("dot_selected") // removes the highlighted dot on the previous slide
 		i--
 		if (i >= 0) {
 			slideUpdate(i)
