@@ -17,21 +17,10 @@ const slides = [
 	}
 ]
 
-let arrowLeft = document.querySelector(".arrow_left")
-let arrowRight= document.querySelector(".arrow_right")
 
-arrowLeft.addEventListener ("click", () => {
-	console.log("Click on the left arrow")
-})
+ //Creation of the bullet points underneath the slider
+ //Style is applied with existing CSS class
 
-arrowRight.addEventListener("click", () => {
-	console.log("Click on the right arrow")
-})
-
-/**
- * Creates the bullet points underneath the slider
- * Style is applied through existing CSS classes
- */
 
 let dotsContainer = document.querySelector(".dots")
 
@@ -39,17 +28,62 @@ for (let i = 0; i < slides.length; i++) {
 	let dot = document.createElement("span")
 	dot.classList.add("dot")
 	dotsContainer.appendChild(dot)
+}
 
-	// dot.addEventListener("click", () => {
-	// dot.classList.toggle("dot_selected")
-	// console.log("selected dot")
- 	//})	
- if (i === 0) {
-		dot.classList.add("dot_selected")
-	}
+let dots = document.querySelectorAll(".dot")
+//highlights the first dot by default
+dots[0].classList.add("dot_selected")
+
+
+// the following function updates the slide based on the i index
+
+let bannerImg = document.querySelector(".banner-img")
+let bannerText = document.querySelector("#banner p")
+
+function slideUpdate(i) {
+	//retrieves the image from the table then places the path of the image in the banner source
+	let image = slides[i]["image"]
+	bannerImg.src = `./assets/images/slideshow/${image}` 
+
+	// retrieves the text from the table then replaces the text over the image
+	let tagLine = slides[i]["tagLine"]
+	bannerText.innerHTML = tagLine 
+
+	//changes which dot is highlighted according to slide number
+	dots[i].classList.add("dot_selected")
 }
 
 
 
-// dot has only been defined in the for loop!!
-// left the function to call it on click, either toggle or if/else
+//the following function listens to the clicks on the right and left arrows to change the slide accordingly
+
+let arrowLeft = document.querySelector(".arrow_left")
+let arrowRight= document.querySelector(".arrow_right")
+
+function carousel () {
+	let i = 0
+
+	arrowRight.addEventListener("click", () => {
+		dots[i].classList.remove("dot_selected") // removes the highlighted dot on the previous slide
+		i++
+		if (i < slides.length) {
+			slideUpdate(i)
+		} else { //when carousel reaches last slide return to first
+			i = 0
+			slideUpdate(i)
+		}
+	})
+
+	arrowLeft.addEventListener("click", () => {
+		dots[i].classList.remove(".dot_selected") // removes the highlighted dot on the previous slide
+		i--
+		if (i >= 0) {
+			slideUpdate(i)
+		} else { // when carousel reaches first slide return to last
+			i = (slides.length - 1)
+			slideUpdate(i)
+		}
+	})
+}
+
+carousel()
